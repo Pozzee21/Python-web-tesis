@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="/metodoCrearUsuario" method='POST'>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputNombre">Usuario</label>
+      <input type="text" class="form-control" id="input" name="nombreUsuario" placeholder="Ingrese el nombre">
+    </div>
+    <div class="form-group col-md-4 ">
+      <label for="inputDni">DNI</label>
+      <input type="number" class="form-control" data-bind="value:replyNumber" name='dni' id="inputDni"
+        placeholder="Ingrese el DNI aqui">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputipo">Tipo de usuario</label>
+      <select id="inputipo" name='seleccionado' class="form-control">
+        <option value="1">Recursos humanos</option>
+        <option value="2">Jefe o Jefa de obra</option>
+        <option value="3">Operario</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2 mt-auto ">
+      <button type="submit" class="btn btn-success btn-responsive"  onclick="myFunction()">Crear usuario</button>
+    </div>
+  </div>
+  <script>
+    function myFunction() {
+      var infodropdown = document.getElementById("inputipo");
+
+      var textSeleccion = e.options[e.selectedIndex].text;  
+
+      window.alert('Usuario creado, por favor carge los datos del usuario :'+ textSeleccion);
+      
+      return
+    }
+  </script>
+
+</form>
+
+ 
+
+
+{% endblock %}
