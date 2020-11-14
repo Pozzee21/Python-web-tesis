@@ -4,10 +4,10 @@ from flask_mysqldb import MySQL
 #importar url_For y redicect para enviar a otro template al usuario cuando se realice una accion 
 app = Flask(__name__)
 #servidor virtual gratuito
-app.config['MYSQL_USER']= 'sql10371101'
-app.config['MYSQL_HOST']='sql10.freemysqlhosting.net'
-app.config['MYSQL_PASSWORD']='QciftIsB3J'
-app.config['MYSQL_DB']= 'sql10371101'
+app.config['MYSQL_USER']= 'root'
+app.config['MYSQL_HOST']='localhost'
+app.config['MYSQL_PASSWORD']='Rode7991'
+app.config['MYSQL_DB']='rode'
 
 mysql = MySQL(app)
 
@@ -35,10 +35,18 @@ def asist():
 @app.route('/CrearUsuario')
 def CrearUsuario():
     return render_template('crearUsuario.html')
+    
+@app.route('/CrearRRHH')  
+def CrearRRHH( ):
+    return render_template('crearRecursoHumano.html')
 
 @app.route('/crearOperario')
 def crearOperario():
-     return render_template('/CrearOperario.html')
+     return render_template('crearOperario.html')
+
+@app.route('/crearJO')
+def crearJO():
+     return render_template('crearJO.html')
 
 @app.route('/metodoCrearUsuario', methods=['POST'])
 def metCrearUsuario():
@@ -53,15 +61,15 @@ def metCrearUsuario():
         cur = mysql.connection.cursor()
         #realizo la comprobacion para renderizar una diferente pantalla segun el tipo de usuario a crear
         if tipoUsuario=='1':
-          render_template('crearOpeario.html')
+            render_template('crearRecursoHumano.html')
         elif tipoUsuario=='2':
-            print('rrhh')         
+            render_template('crearOperario.html')     
         elif tipoUsuario=='3':
-            print('ope')
+             render_template('crearJO.html')
 
      
         #Sentencia
-        cur.execute("INSERT INTO `usuario`(`IdUsuario`,`Contraseña`, `Usuario`,`tipo`) VALUES (%s,%s,%s,%s)", (dni, nombreUsuario, 2132123,tipoUsuario))
+        cur.execute("INSERT INTO `usuario`(`IdUsuario`,`Contraseña`, `Usuario`,`tipo`) VALUES (%s,%s,%s,%s)", (dni, 5465456, nombreUsuario, tipoUsuario))
        #cargo la sentencia con un commit
         mysql.connection.commit()
 
@@ -70,10 +78,9 @@ def metCrearUsuario():
 
 @app.route('/CrearObra', methods=['POST'])
 def crearobra():
-    if request.method== 'POST':
+    if request.method=='POST':
    #crear metodo cargar obra
-
-            return render_template('tableroControl.html')
+     return render_template('tableroControl.html')
 
 
 

@@ -1,53 +1,55 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<table class="table table-hover table-dark">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Apellido</th>
-      <th scope="col">Asistencia</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-
-      <td>
-        <!--Check dentro de la tabla-->
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1">
-          <label class="custom-control-label" for="tableDefaultCheck1">Presente</label>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>
-        <!--Check dentro de la tabla-->
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck2">
-          <label class="custom-control-label" for="tableDefaultCheck2">Presente</label>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="1">Pedro</td>
-      <td colspan="2">aguilar</td>
-      <td>
-        <!--Check dentro de la tabla-->
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck3">
-          <label class="custom-control-label" for="tableDefaultCheck3">Presente</label>
-        </div>
+<div class="mt-4">  
+  <table class="table table-hover table-dark">
+    <thead>
+      <tr>
+        <th scope="col">N</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Asistencia</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Marcos</td>
+        <td>Gonzales</td>
+        <td>
+          <!--Check dentro de la tabla-->
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1">
+            <label class="custom-control-label" for="tableDefaultCheck1">Presente</label>
+          </div>
         </td>
-    </tr>
-  </tbody>
-</table>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Pablo</td>
+        <td>Diaz</td>
+        <td>
+          <!--Check dentro de la tabla-->
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="tableDefaultCheck2">
+            <label class="custom-control-label" for="tableDefaultCheck2">Presente</label>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Pedro</td>
+        <td>aguilar</td>
+        <td>
+          <!--Check dentro de la tabla-->
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="tableDefaultCheck3">
+            <label class="custom-control-label" for="tableDefaultCheck3">Presente</label>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <a type="submit" class="btn btn-primary" href="/asistencia">Cargar Asistencia</a>
+</div>
+
 {% endblock %}
