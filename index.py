@@ -14,7 +14,7 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    return render_template('CrearUsuario.html')
+    return render_template('tableroControl.html')
 
 @app.route('/about')
 def about():
