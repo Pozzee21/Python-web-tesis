@@ -1,5 +1,42 @@
 {% extends "layout.html" %}
 {% block content %}
-<p>Crear opeario</p>
+<form action="/metodoCrearOp" method="POST">
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="inputNombre">Nombre</label>
+        <input type="text" class="form-control" id="input" name="NombreOpe" placeholder="Ingrese el nombre">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputNombre">Apellido</label>
+        <input type="text" class="form-control" id="input" name="ApellidoOpe" placeholder="Ingrese el Apellido">
+      </div>
+      <div class="form-group col-md-4 ">
+        <label for="inputDni">Telefono</label>
+        <input type="number" class="form-control" data-bind="value:replyNumber" name='TelOpe' id="inputDni"
+          placeholder="Ingrese el DNI aqui">
+      </div>
+    </div>
+        <!--dropdown que muestra los usuarios en la base de  datos-->
+      <div class="form-group col-md-4">
+          <label for="inputipo">Usuarios Operarios</label>
+          <select id="inputipo" name='DropdownUsuario' class="form-control">
+          {% for d in datos  %}
+          <option value="{{ d[0] }}" SELECTED>{{ d[1] }}</option>
+          {% endfor %}
+          </select>
+        </div>
+        <!--Dropdown que muestra las obras a las que se le puede asociar el usuario-->
+        <div class="form-group col-md-4">
+            <label for="inputipo">Obras Habilitadas</label>
+            <select id="inputipo" name='DropdownObra' class="form-control">
+            {% for o in obras  %}
+            <option value="{{ o[0] }}" SELECTED>{{ o[1] }}</option>
+            {% endfor %}
+            </select>
+          </div>
+        <div class="form-group col-md-2 mt-auto ">
+          <button type="submit" class="btn btn-success btn-responsive"  onclick="myFunction()">Crear usuario</button>
+        </div>
+  </form>
 
 {% endblock %}

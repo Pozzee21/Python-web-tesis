@@ -4,48 +4,24 @@
   <table class="table table-hover table-dark">
     <thead>
       <tr>
-        <th scope="col">N</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
         <th scope="col">Asistencia</th>
       </tr>
     </thead>
     <tbody>
+      {%for d in datos %}
       <tr>
-        <th scope="row">1</th>
-        <td>Marcos</td>
-        <td>Gonzales</td>
+        <td>{{d.1}}</td>
+        <td>{{d.2}}</td>
         <td>
           <!--Check dentro de la tabla-->
           <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1">
-            <label class="custom-control-label" for="tableDefaultCheck1">Presente</label>
+            <input type="checkbox" class="custom-control-input" id="{{d.2}}">
+            <label class="custom-control-label" for="{{d.2}}">Presente</label>
           </div>
         </td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Pablo</td>
-        <td>Diaz</td>
-        <td>
-          <!--Check dentro de la tabla-->
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tableDefaultCheck2">
-            <label class="custom-control-label" for="tableDefaultCheck2">Presente</label>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Pedro</td>
-        <td>aguilar</td>
-        <td>
-          <!--Check dentro de la tabla-->
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="tableDefaultCheck3">
-            <label class="custom-control-label" for="tableDefaultCheck3">Presente</label>
-          </div>
-        </td>
+        {%endfor%}
       </tr>
     </tbody>
   </table>

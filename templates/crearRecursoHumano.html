@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/metodoCrearRecursoHumano" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputNombre">Nombre</label>
+      <input type="text" class="form-control" id="input" name="NombreRRHH" placeholder="Ingrese el nombre">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputNombre">Apellido</label>
+      <input type="text" class="form-control" id="input" name="ApellidoRRHH" placeholder="Ingrese el Apellido">
+    </div>
+    <div class="form-group col-md-4 ">
+      <label for="inputDni">DNI</label>
+      <input type="number" class="form-control" data-bind="value:replyNumber" name='dni' id="inputDni"
+        placeholder="Ingrese el DNI aqui">
+    </div>
+  </div>
+      <!--dropdown que muestra los usuarios en la base de  datos-->
+    <div class="form-group col-md-4">
+        <label for="inputipo">Usuario de RRHH</label>
+        <select id="inputipo" name='seleccionado' class="form-control">
+        {% for datos in datos  %}
+        <option value="{{ datos[1] }}" SELECTED>{{ datos[1] }}</option>
+        {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group col-md-2 mt-auto ">
+        <button type="submit" class="btn btn-success btn-responsive"  onclick="myFunction()">Crear usuario</button>
+      </div>
+</form>
+
+{% endblock %}

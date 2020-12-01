@@ -1,93 +1,103 @@
 {% extends "layout.html" %}
 {% block content %}
 
-   <h1 class="text-center">Tablero de control</h1>
-   <div class="mt-5 container-fluid">
-     <!-- divido la pantalla en 2 part1 -->
-      <div class="row"  id="columna1">
-        
-        <div class="offset-1 col-auto  col-sm-1">
-         <a type="submit" class=" mt-2 btn btn-primary" href="/CrearUsuario">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+<h1 class="text-center">Tablero de control</h1>
+<div class="mt-5 container-fluid">
+  <!-- divido la pantalla en 2 part1 -->
+  <div class="row" id="columna1">
+
+    <div class="offset-1 col-auto  col-sm-1">
+      <a type="submit" class=" mt-2 btn btn-primary" href="/CrearUsuario">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
         </svg></a>
 
-         <a type="submit" class=" mt-2 btn btn-primary" href="/asistencia" >
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-week-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM9.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"/>
-          </svg></a>
+      <a type="submit" class=" mt-2 btn btn-primary" href="/asistencia">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-week-fill" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM9.5 7a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM2 10.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
+        </svg></a>
 
-         <a type="submit" class=" mt-2 btn btn-primary" href="/asistencia">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-          </svg></a>
+      <a type="submit" class=" mt-2 btn btn-primary" href="/asistencia">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+        </svg></a>
 
-        <a type="submit" class=" mt-2 btn btn-primary" href="/CrearObra">
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-building" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694L1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
-            <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
-          </svg></a>
-        </div>
-     <!-- divido la pantalla en 2 part2 -->   
-      <div class="row col-sm-4 col-md-10"  id="columna2">
-          <div class="row col-sm-auto col-md-auto">
-            <div class="offset-1 col-auto col-sm-auto mt-2">
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Tabla operarios</h5>
-                  <h6 class="card-subtitle mb-2 text-muted"></h6>
-                  <p class="card-text">Aqui se mostrara el contenido de una tabla con los empleados que marcaron asistencia recientemente</p>
-                  <a href="#" class="card-link">Ver operarios</a>
-                  <a href="#" class="card-link">Ver horarios</a>
-                </div>
-              </div>
-            </div>
-            <div class="offset-1 col-auto col-sm-auto mt-2">
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Opciones  de exportacion</h5>
-                  <p class="card-text">
-                    Exportar usuarios<br>
-                    Exportar Horarios<br>
-                    Exportar obras
-                  </p>
-                  <a href="#" class="card-link">Exportar .csv</a>
-                </div>
-              </div>
-            </div>
-            
-            <div class="offset-1 col-auto col-sm-auto mt-2">
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Opciones  de exportacion</h5>
-                  <p class="card-text">
-                    Exportar usuarios<br>
-                    Exportar Horarios<br>
-                    Exportar obras
-                  </p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
-            </div>
-            
-            <div class="offset-1 col-auto col-sm-auto mt-2">
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Opciones  de exportacion</h5>
-                  <p class="card-text">
-                    Exportar usuarios<br>
-                    Exportar Horarios<br>
-                    Exportar obras
-                  </p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div>
+      <a type="submit" class=" mt-2 btn btn-primary" href="/crearObra">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-building" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694L1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
+          <path
+            d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
+        </svg></a>
+    </div>
+    <!-- divido la pantalla en 2 part2 -->
+    <div class="row col-sm-4 col-md-10" id="columna2">
+      <div class="row col-sm-auto col-md-auto">
+        <div class="offset-1 col-auto col-sm-auto mt-2">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Tabla operarios</h5>
+              <h6 class="card-subtitle mb-2 text-muted"></h6>
+              <p class="card-text">Aqui se mostrara el contenido de una tabla con los empleados que marcaron asistencia
+                recientemente</p>
+              <a href="#" class="card-link">Ver operarios</a>
+              <a href="#" class="card-link">Ver horarios</a>
             </div>
           </div>
-      </div>
-      
+        </div>
+        <div class="offset-1 col-auto col-sm-auto mt-2">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Opciones de exportacion</h5>
+              <p class="card-text">
+                Exportar usuarios<br>
+                Exportar Horarios<br>
+                Exportar obras
+              </p>
+              <a href="#" class="card-link">Exportar .csv</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="offset-1 col-auto col-sm-auto mt-2">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Opciones de exportacion</h5>
+              <p class="card-text">
+                Exportar usuarios<br>
+                Exportar Horarios<br>
+                Exportar obras
+              </p>
+              <a href="#" class="card-link">Card link</a>
+              <a href="#" class="card-link">Another link</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="offset-1 col-auto col-sm-auto mt-2">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Opciones de exportacion</h5>
+              <p class="card-text">
+                Exportar usuarios<br>
+                Exportar Horarios<br>
+                Exportar obras
+              </p>
+              <a href="#" class="card-link">Card link</a>
+              <a href="#" class="card-link">Another link</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+  </div>
+</div>
 {% endblock %}
