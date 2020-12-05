@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, request, url_for
 from flask_mysqldb import MySQL
+from datetime import date, datetime
 
 # importar url_For y redicect para enviar a otro template al usuario cuando se realice una accion
 app = Flask(__name__)
@@ -10,7 +11,6 @@ app.config["MYSQL_PASSWORD"] = "Rode7991"
 app.config["MYSQL_DB"] = "rode"
 
 mysql = MySQL(app)
-
 
 @app.route("/")
 def home():
@@ -33,14 +33,19 @@ def login():
 @app.route("/tableroControl")
 def tcontrol():
     return render_template("tableroControl.html")
-    
+
 #poner en el metodo que  espera un parametro para utilizarlo en la busqueda de horarios solo del operario que esta por marcar asistencia
 @app.route("/MarcarHorario")
 def MHorario():
+    #idOpe=id
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM horario')
     horarios=cur.fetchall()
-    return render_template("marcarHorario.html",horarios=horarios)
+
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM operario WHERE IdOperario= 234123')
+    datousr=cur.fetchall()
+    return render_template("marcarHorario.html", datousr=datousr, horarios=horarios)
 
 @app.route("/asistencia")
 def asist():
@@ -189,8 +194,31 @@ def MetCrearOp():
     cur.execute( "INSERT INTO `rode`.`operario` (`IdOperario`,`Nombre`,`Apellido`,`Telefono`,`IdObra`) VALUES (%s,%s,%s,%s,%s)", sentencia )
     # cargo la sentencia con un commit
     mysql.connection.commit()
-    return redirect(url_for(tcontrol))
+    return redirect(url_for("tcontrol"))
 
+@app.route("/metodoCargarIngreso/<string:Id>")
+def metodoCargarIngreso(Id):
+
+    return Id
+
+@app.route("/metodoCargarSalida/<string:Id>")
+def metodoCargarSalida(Id):
+    dniOpe=23
+    location="Oulto"
+    tipo="Ingreso"
+    #tiempo actual
+    tiempo = datetime.now()
+    hora = tiempo.strftime("%H:%M:%S")
+     
+    #fecha en  aaaa-mm-dd
+    fecha = str(date.today())
+    sentencia= ("lunes",hora,fecha,dniOpe,location,tipo)
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s)", sentencia )
+
+    mysql.connection.commit()
+    
+    return fecha
 
 if __name__ == "__main__":
     app.run(debug=True)

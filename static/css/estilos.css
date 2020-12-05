@@ -1,0 +1,10 @@
+.divNombreApe{
+    margin: auto;
+  width: 50%;
+  border: 3px solid grey;
+  padding: 10px;
+}
+.textcenter{
+    margin:auto;
+    text-align:center;
+}
