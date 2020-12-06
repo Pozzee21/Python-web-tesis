@@ -1,6 +1,7 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for, flash
 from flask_mysqldb import MySQL
 from datetime import date, datetime
+import locale, time
 
 # importar url_For y redicect para enviar a otro template al usuario cuando se realice una accion
 app = Flask(__name__)
@@ -46,13 +47,38 @@ def MHorario():
     cur.execute('SELECT * FROM operario WHERE IdOperario= 234123')
     datousr=cur.fetchall()
     return render_template("marcarHorario.html", datousr=datousr, horarios=horarios)
+    
+@app.route("/verHorarios")
+def verHorarios():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM horario')
+    horarios = cur.fetchall()
+    return render_template("verHorarios.html", horarios=horarios)
+
+@app.route("/buscarHorarios", methods=["POST"])
+def Buscarhorario():
+    if request.method == "POST":
+        id =request.form["busqueda"]
+        if id=="":
+         #mensajeError="Error en la busqueda, no se escrbio ningun dato o no existen ningun dato con"+id+". Se muestran todos los datos"
+         #flash(mensajeError)
+         return redirect(url_for("verHorarios"))
+        else:
+         #mensajeExito= "Estos son los resultados de  su busqueeda:"+id   
+         cur = mysql.connection.cursor()
+         #Hago la consulta para la busqueda en la db, donde el dni del operario  sea asi 
+         cur.execute('SELECT * FROM rode.horario WHERE DniOperario LIKE "%'+id+'%"or Ubicacion LIKE "%'+id+'%";')
+         horarioid = cur.fetchall()
+         #flash(mensajeExito)
+        return render_template("verHorarios.html", horarios=horarioid)   
+    return redirect(url_for("verHorarios"))
 
 @app.route("/asistencia")
 def asist():
+
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM usuario')
     datos= cur.fetchall()
-
     return render_template("asistencia.html", datos=datos)
 
 
@@ -67,8 +93,7 @@ def CrearRRHH():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM usuario Where Tipo=1')
     #lleno la variable datos con  la informacion  de  usuarios que tengan como tipo 1 
-    datos= cur.fetchall()       
-    return render_template("crearRecursoHumano.html", datos=datos)
+    return redirect(url_for("tcontrol"))
 
 
 @app.route("/crearOperario")
@@ -198,27 +223,44 @@ def MetCrearOp():
 
 @app.route("/metodoCargarIngreso/<string:Id>")
 def metodoCargarIngreso(Id):
-
-    return Id
+    locale.setlocale(locale.LC_TIME, "es_ES")
+    dia=time.strftime("%A")
+    dniOpe=234123
+    #FALTA AGREGAR LA OBRA QUE  TRAIGA DESDE MARCACION O  DESDE EL USUARIO MISMO
+    location="CEMAIC"
+    tipo="Ingreso"
+    #tiempo actual
+    tiempo = datetime.now()
+    hora = tiempo.strftime("%H:%M:%S")
+    #fecha en  aaaa-mm-dd
+    fecha = str(date.today())
+    sentencia= (dia,hora,fecha,dniOpe,location,tipo)
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",sentencia )
+    mysql.connection.commit()
+    return redirect(url_for("MHorario"))
 
 @app.route("/metodoCargarSalida/<string:Id>")
 def metodoCargarSalida(Id):
-    dniOpe=23
-    location="Oulto"
-    tipo="Ingreso"
+    #seteo a español la variable que define el idioma  de python para pedir el dia  a datetime y me lo  muestre en español y almacenarlo en la db
+    locale.setlocale(locale.LC_TIME, "es_ES")
+    dia=time.strftime("%A")
+    dniOpe=234123
+    location="CEMAIC"
+    tipo="Salida"
     #tiempo actual
     tiempo = datetime.now()
     hora = tiempo.strftime("%H:%M:%S")
      
     #fecha en  aaaa-mm-dd
     fecha = str(date.today())
-    sentencia= ("lunes",hora,fecha,dniOpe,location,tipo)
+    sentencia= (dia,hora,fecha,dniOpe,location,tipo)
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s)", sentencia )
+    cur.execute("INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)", sentencia )
 
     mysql.connection.commit()
     
-    return fecha
+    return redirect(url_for("MHorario"))
 
 if __name__ == "__main__":
     app.run(debug=True)

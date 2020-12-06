@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/buscarHorarios"method='POST'>
+<div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Buscar horario por DNI o obra" aria-describedby="basic-addon2" name="busqueda">
+    <div class="input-group-append">
+        <!--Creo este boton  que  envia al usuario a una nueva ventana por medio de url for que utiliza el metodo y una variable para e ncontrar el usuario buscado -->
+      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    </div>
+  </div>
+<div class="divCentrado">
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Tipo</th>
+                <th scope="col">Operario</th>
+                <th  scope="col">Hora</th>
+                <th scope="col">Obra</th>
+                <th scope="col">Dia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for H in horarios%}
+            <tr>
+                <td id="tipoIngreso">{{H[6]}}</td>
+                <td id="dniOperario">{{H[4]}}</td>
+                <td id="hora">{{H[2]}}</td>
+                <td id="ubicacion">{{H[5]}}</td>
+                <td id="fecha">{{H[3]}}</td>
+                
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</form>
+
+{% endblock %}
