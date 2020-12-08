@@ -37,9 +37,6 @@ def loginIn():
         #Carga el nombre del usuario y realizo la busqueda del usuario en la base de datos
         usrlogin= request.form["usuario"]
         pasw= request.form["password"]
-        print(request.form["password"])
-        pasw=bcrypt.generate_password_hash(pasw)
-        print(pasw)
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM rode.usuario WHERE usuario="'+usrlogin+'";')
         userdata= cur.fetchall()
@@ -48,8 +45,8 @@ def loginIn():
             print(userdata)
             userdata=userdata[0]
             print(userdata)
-            if usrlogin==userdata[1] and pasw==userdata[2]:
-                print("cul")
+            if usrlogin==userdata[1] and bcrypt.check_password_hash(userdata[2],pasw):
+                session
                 return redirect(url_for("tcontrol"))
             else:
                 mensajeError="A ocurrido un error con tu contraseña, intentalo nuevamente"
