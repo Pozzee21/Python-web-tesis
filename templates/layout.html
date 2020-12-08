@@ -43,7 +43,16 @@
         </div>
     </nav>
 
-    <div class="container" id="contenedorLayout">
+    <div class="container mt-4">
+        {% with  messages= get_flashed_messages() %}
+            {%if messages %}
+            <ul>
+                {%for message  in messages%}
+                    <li>{{message}}</li>
+                {%endfor%}
+            </ul>
+            {%endif%}
+        {%endwith%}
         <!--Aqui se muestran las paginas con menu superior de admin -->
         {% block content %}{% endblock %}
     </div>

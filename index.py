@@ -1,35 +1,65 @@
-from flask import Flask, redirect, render_template, request, url_for, flash
+from flask import Flask, redirect, render_template, request, url_for, flash, session
 from flask_mysqldb import MySQL
 from datetime import date, datetime
 import locale, time
+from flask_bcrypt import Bcrypt
 
-# importar url_For y redicect para enviar a otro template al usuario cuando se realice una accion
 app = Flask(__name__)
-# servidor Local Gratuito  configuracion de conexiones de base de datos
+
+#Servidor MSQL Local-configuracion de conexiones de base de datos
 app.config["MYSQL_USER"] = "root"
 app.config["MYSQL_HOST"] = "localhost"
 app.config["MYSQL_PASSWORD"] = "Rode7991"
 app.config["MYSQL_DB"] = "rode"
 
+#Variable para el cursor de la base de datos
 mysql = MySQL(app)
+#Variable para hash
+bcrypt = Bcrypt()
+#Creacion de la clave secreta
+app.secret_key="kYp3s6v9y$B&E)H@McQfTjWnZq4t7w!z"
 
 @app.route("/")
 def home():
-
-    return render_template("tableroControl.html")
-
+    return render_template("login.html")
 
 @app.route("/about")
 def about():
-
     return render_template("about.html")
-
 
 @app.route("/login")
 def login():
-
     return render_template("login.html")
 
+@app.route("/loginIn",methods=["POST"])
+def loginIn():
+    if request.method=="POST":
+        #Carga el nombre del usuario y realizo la busqueda del usuario en la base de datos
+        usrlogin= request.form["usuario"]
+        pasw= request.form["password"]
+        print(request.form["password"])
+        pasw=bcrypt.generate_password_hash(pasw)
+        print(pasw)
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM rode.usuario WHERE usuario="'+usrlogin+'";')
+        userdata= cur.fetchall()
+        print(userdata)
+        if userdata:
+            print(userdata)
+            userdata=userdata[0]
+            print(userdata)
+            if usrlogin==userdata[1] and pasw==userdata[2]:
+                print("cul")
+                return redirect(url_for("tcontrol"))
+            else:
+                mensajeError="A ocurrido un error con tu contraseña, intentalo nuevamente"
+                flash(mensajeError)
+                return redirect(url_for("login")) 
+        else:
+            mensajeError="A ocurrido un error con tu usuario, intentalo nuevamente"
+            flash(mensajeError)
+            return redirect(url_for("login")) 
+    return redirect(url_for("login"))
 
 @app.route("/tableroControl")
 def tcontrol():
@@ -73,9 +103,14 @@ def Buscarhorario():
         return render_template("verHorarios.html", horarios=horarioid)   
     return redirect(url_for("verHorarios"))
 
+@app.route("/verUsuarios")
+def verUsr():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM rode.operario')
+    datausuario= cur.fetchall()
+    return render_template("/verUsuarios.html",usuarios=datausuario)
 @app.route("/asistencia")
 def asist():
-
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM usuario')
     datos= cur.fetchall()
@@ -94,7 +129,6 @@ def CrearRRHH():
     cur.execute('SELECT * FROM usuario Where Tipo=1')
     #lleno la variable datos con  la informacion  de  usuarios que tengan como tipo 1 
     return redirect(url_for("tcontrol"))
-
 
 @app.route("/crearOperario")
 def crearOperario():
@@ -133,9 +167,10 @@ def metCrearUsuario():
     if request.method == "POST":
         # pido todos los datos desde el formulario y los instancio para cargar la sentencia luego
         nombreUsuario = request.form["nombreUsuario"]
-        #hacer la contraseña para que se cree mediante el dni
         dni = request.form["dni"]
-        contraseña=dni
+        #hasheo el dni para almacenarlo en la base como contraseña luego el  usuario podria cambiarla 
+        contraseña=bcrypt.generate_password_hash(dni)
+        print(int(dni))
         tipoUsuario = request.form.get("seleccionado")
         # Conecto a mysql y instancio el cursor
         cur = mysql.connection.cursor()
