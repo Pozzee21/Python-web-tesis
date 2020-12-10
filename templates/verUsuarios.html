@@ -1,32 +1,31 @@
 {% extends "layout.html" %}
 {% block content %}
- 
-<form action="/buscarUsuario"method='POST'>
+
+<form action="/buscarUsuarios" method='POST'>
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Buscar usuario por DNI o obra" aria-describedby="basic-addon2" name="busqueda">
+        <input type="text" class="form-control" placeholder="Buscar usuario por DNI o Usuario"
+            aria-describedby="basic-addon2" name="busqueda">
         <div class="input-group-append">
             <!--Creo este boton  que  envia al usuario a una nueva ventana por medio de url for que utiliza el metodo y una variable para e ncontrar el usuario buscado -->
-          <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
         </div>
-      </div>
-    <div class="divCentrado">
+    </div>
+    <div class="justify-content-center">
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col">DNI</th>
-                    <th scope="col">Nombre y Apellido</th>
-                    <th  scope="col">Obra</th>
-                    <th scope="col">Telefono</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">tipo</th>
                 </tr>
             </thead>
             <tbody>
-                {%for H in usuarios%}
+                {%for usr in usuarios %}
                 <tr>
-                    <td id="DNI">{{H[3]}}</td>
-                    <td id="NomApe">{{H[4]}}</td>
-                    <td id="Obra">{{H[2]}}</td>
-                    <td id="Tel">{{H[3]}}</td>
-                    
+                    <td id="DNI">{{usr[0]}}</td>
+                    <td id="Usuario">{{usr[1]}}</td>
+                    <td id="Tipo">{{usr[3]}}</td>
+
                 </tr>
                 {% endfor %}
             </tbody>

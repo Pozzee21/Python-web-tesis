@@ -3,34 +3,34 @@
 
 <form action="/metodoCrearObra" method='POST'>
 
-    <div class="form-row">
-      <div class="form-group col-md-4">
-        <label for="inputNombreObra">Nombre de obra</label>
-        <input type="text" class="form-control" id="inputNombreObra" name="nombreObra" placeholder="Ingrese el nombre">
-      </div>
-      <div class="form-group col-md-4 ">
-        <label for="inputDni">Ubicacion</label>
-        <input type="text" class="form-control" name='ubicacion' id="inputUbicacion"
-          placeholder="Ingrese la ubicacion provincia/direccion">
-      </div>
-      <div class="form-group col-md-4 ">
-        <label for="inputDni">Centro de costo</label>
-        <input type="text" class="form-control" name='centroCosto' id="inputCentroCosto"
-          placeholder="Ingrese el centro de costo">
-      </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputNombreObra">Nombre de obra</label>
+      <input type="text" class="form-control" id="inputNombreObra" name="nombreObra" placeholder="Ingrese el nombre">
     </div>
-    <div class="form-row">
-      <div class="form-group col-md-4">
-        <label for="inputipo">Usuarios Jefes o jefas de obra</label>
-        <select id="inputipo" name='seleccionado' class="form-control">
+    <div class="form-group col-md-4 ">
+      <label for="inputDni">Ubicacion</label>
+      <input type="text" class="form-control" name='ubicacion' id="inputUbicacion"
+        placeholder="Ingrese la ubicacion provincia/direccion">
+    </div>
+    <div class="form-group col-md-4 ">
+      <label for="inputDni">Centro de costo</label>
+      <input type="text" class="form-control" name='centroCosto' id="inputCentroCosto"
+        placeholder="Ingrese el centro de costo">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputipo">Usuarios Jefes o jefas de obra</label>
+      <select id="inputipo" name='seleccionado' class="form-control">
         {% for d in datos  %}
-        <option value="{{ d[0] }}" SELECTED>{{ d[1]}} {{d[2]}}</option>
+        <option value="{{ d[0] }}">{{ d[1]}} {{d[2]}}</option>
         {% endfor %}
-        </select>
-      </div>
-      <div class="form-group col-md-2 mt-auto ">
-        <button type="submit" class="btn btn-success btn-responsive"  onclick="myFunction()">Crear obra</button>
-      </div>
+      </select>
     </div>
+    <div class="form-group col-md-2 mt-auto ">
+      <button type="submit" class="btn btn-success btn-responsive" onclick="myFunction()">Crear obra</button>
+    </div>
+  </div>
 </form>
 {% endblock %}

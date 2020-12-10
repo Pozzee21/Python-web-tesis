@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+<form action="/buscarOperarioObra" method="POST">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-3">
+                <div class="form-group">
+                    <label for="DropdownObra">Obras Habilitadas</label>
+                    <div class="input-group justify-content-center">
+                        <select id="DropdownObra" name='DropdownObra' class="form-control">
+                            {% for o in obra %}
+                            <option value="{{ o[0] }}">{{ o[1] }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-outline-secondary" type="submit">Actualizar lista</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="justify-content-center">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for usr in operario %}
+                <tr>
+                    <td id="DNI">{{usr[0]}}</td>
+                    <td id="Nombre">{{usr[1]}}</td>
+                    <td id="Nombre">{{usr[2]}}</td>
+                    <td id="Nombre">{{usr[3]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+{% endblock %}

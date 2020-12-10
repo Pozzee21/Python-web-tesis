@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title> Sitio de gestion de horarios y asistencia </title>
-    <!--css para boostrap-->
+    <!-- link para boostrap y css-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/estilos.css">
@@ -37,26 +37,30 @@
                     <a class="nav-link" href="/asistencia">Asistencia</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
+                    <a class="nav-link" href="/about">Acerca de</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logOut">Salir</a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container mt-5 justify-content-center">
         {% with  messages= get_flashed_messages() %}
-            {%if messages %}
-            <ul>
-                {%for message  in messages%}
-                <!--agregar alert para hacer mas llamativo el mensaje asi ta feazo-->
-                    <li>{{message}}</li>
-                {%endfor%}
-            </ul>
-            {%endif%}
+        {%if messages %}
+        {%for message  in messages%}
+        <!--hacer que se pueda quitar o desaparecer-->
+        <div class="alert alert-warning" role="alert">
+            {{message}}
+        </div>
+        {%endfor%}
+        {%endif%}
         {%endwith%}
         <!--Aqui se muestran las paginas con menu superior de admin -->
         {% block content %}{% endblock %}
     </div>
+
     <!-- js para boostrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -70,6 +74,8 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/2b2da26a89.js" crossorigin="anonymous"></script>
+    <!--Permitir los popups en todas las  pestañas-->
+    <script>$(function () { $('[data-toggle="tooltip"]').tooltip() })</script>
 </body>
 
 </html>

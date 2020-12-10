@@ -7,20 +7,20 @@
         window.addEventListener("load", inicio)
         function inicio() {
             navigator.geolocation.getCurrentPosition(alExito, alError);
-            
+
         }
         function alExito(info) {
             var lat = info.coords.latitude;
             var longitude = info.coords.longitude;
             alert(lat)
             alert(longitude)
-            
+
         }
         function alError() {
             alert('Error no se acepto la ubicacion')
         }
     </script>
-    
+
     <table class="table table-dark">
         <thead>
             <tr>
@@ -34,7 +34,7 @@
             </script>
             <tr>
                 <th scope="row">1</th>
-                <td id= index-lat></var></td>
+                <td id=index-lat></var></td>
                 <td id="index-long"></td>
             </tr>
         </tbody>

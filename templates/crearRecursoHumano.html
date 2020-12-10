@@ -16,19 +16,19 @@
         placeholder="Ingrese el DNI aqui">
     </div>
   </div>
-      <!--dropdown que muestra los usuarios en la base de  datos-->
-    <div class="form-group col-md-4">
-        <label for="inputipo">Usuario de RRHH</label>
-        <select id="inputipo" name='seleccionado' class="form-control">
-        {% for datos in datos  %}
-        <option value="{{ datos[1] }}" SELECTED>{{ datos[1] }}</option>
-        {% endfor %}
-        </select>
-      </div>
+  <!--dropdown que muestra los usuarios en la base de  datos-->
+  <div class="form-group col-md-4">
+    <label for="inputipo">Usuario de RRHH</label>
+    <select id="inputipo" name='seleccionado' class="form-control">
+      {% for datos in datos  %}
+      <option value="{{ datos[1] }}" SELECTED>{{ datos[1] }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-      <div class="form-group col-md-2 mt-auto ">
-        <button type="submit" class="btn btn-success btn-responsive"  onclick="myFunction()">Crear usuario</button>
-      </div>
+  <div class="form-group col-md-2 mt-auto ">
+    <button type="submit" class="btn btn-success btn-responsive" onclick="myFunction()">Crear usuario</button>
+  </div>
 </form>
 
 {% endblock %}
