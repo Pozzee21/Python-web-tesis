@@ -1,24 +1,29 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, session
+from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file
 from flask_mysqldb import MySQL
 from datetime import date, datetime
 import locale, time
 from flask_bcrypt import Bcrypt
 
-app = Flask(__name__)
+# condiciones para la ejecucion de lcodigo 
+#   Se necita instalar todas estas dependencias importadas arriba (FLASK,FLASK_MYSQLDB,DATETIME,FLASK_BCRYPT) 
+#       Ademas se debe utilziar python 3.7.0 para correr flask_mysqldb 
+#          Tambien se debe tener la base de datos fuincionando y editar las app.config deacuerdo a su configuracion 
+#           
 
+
+app = Flask(__name__)
 # Servidor MSQL Local-configuracion de conexiones de base de datos
-app.config["MYSQL_USER"] = "root"
 app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_PASSWORD"] = "Rode7991"
+app.config["MYSQL_USER"] = "root"
+app.config["MYSQL_PASSWORD"] = "Rode7991*"
 app.config["MYSQL_DB"] = "rode"
 
 # Variable para el cursor de la base de datos
-mysql = MySQL(app)
-# Variable para hash
+mysql= MySQL(app)
+# Variable para hasheo
 bcrypt = Bcrypt()
-# Creacion de la clave secreta
+#Clave secreta
 app.secret_key = "kYp3s6v9y$B&E)H@McQfTjWnZq4t7w!z"
-
 
 @app.route("/")
 def home():
@@ -42,13 +47,12 @@ def loginIn():
         usrlogin = request.form["usuario"]
         pasw = request.form["password"]
         cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM rode.usuario WHERE usuario="' + usrlogin + '";')
+        cur.execute('SELECT * FROM rode.usuario WHERE usuario="'+usrlogin+'";')
         userdata = cur.fetchall()
         if userdata:
             userdata = userdata[0]
             if usrlogin == userdata[1] and bcrypt.check_password_hash(
-                userdata[2], pasw
-            ):
+                userdata[2], pasw ):
                 # almaceno en el diccionario de sessiones mi usuarrio para validaro luego en otros metodos
                 session["idusuario"] = userdata[0]
                 session["nombreusr"] = userdata[1]
@@ -203,7 +207,6 @@ def buscarOpeObra():
     if request.method == "POST":
         indexObra = request.form.get("DropdownObra")
         if indexObra:
-            print(indexObra)
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM obra;")
             dataObra = cur.fetchall()
@@ -280,7 +283,6 @@ def metCrearUsuario():
         dni = request.form["dni"]
         # hasheo el dni para almacenarlo en la base como contraseña luego el  usuario podria cambiarla
         contraseña = bcrypt.generate_password_hash(dni)
-        print(int(dni))
         tipoUsuario = request.form.get("seleccionado")
         # Conecto a mysql y instancio el cursor
         cur = mysql.connection.cursor()
@@ -342,7 +344,6 @@ def MetJO():
         usuario = request.form.get("usr")
         seleccionado = "3"
         sentencia = (usuario, NombreJO, ApellidoJO, tel, seleccionado)
-        print(sentencia)
         # creo el cursor para realizar sentencias en la base de datos
         cur = mysql.connection.cursor()
         # Sentencia
@@ -364,7 +365,6 @@ def MetCrearOp():
         seleccionUsr = request.form.get("DropdownUsuario")
         seleccionObra = request.form.get("DropdownObra")
         sentencia = (seleccionUsr, NombreOP, ApellidoOp, TelefonoOp, seleccionObra)
-        print(sentencia)
     # creo el cursor para realizar sentencias en la base de datos
     cur = mysql.connection.cursor()
     # Sentencia
@@ -390,7 +390,7 @@ def metodoCargarIngreso(Id):
     dniOpe = session["idusuario"]
     # FALTA AGREGAR LA OBRA QUE TRAIGA DESDE DONDE ESTA MARCANDO O DESDE LOS DATOS DEL USUARIO MISMO
     location = usrData[4]
-    tipo = "Ingreso"
+    tipo = "    "
     # tiempo actual
     tiempo = datetime.now()
     hora = tiempo.strftime("%H:%M:%S")
@@ -400,7 +400,7 @@ def metodoCargarIngreso(Id):
     cur = mysql.connection.cursor()
     cur.execute(
         "INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",
-        sentencia,
+        sentencia
     )
     mysql.connection.commit()
     return redirect(url_for("MHorario"))
@@ -436,6 +436,30 @@ def metodoCargarSalida(Id):
 
     return redirect(url_for("MHorario"))
 
+@app.route("/metodoDescargarUsuarios")
+def MetDescargarUsr():
+    #creo las variables para asignarle un nombre unico al archivo que se cree
+    fecha = str(date.today())
+    tiempo = datetime.now()
+    hora = tiempo.strftime(" %H-%M-%S")
+    nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+"Usuarios.csv"
+    cur = mysql.connection.cursor()
+    #guardo el archivo en el servidor
+    cur.execute("""SELECT * FROM rode.usuario INTO OUTFILE '"""+nombreArchivo+""" ' FIELDS TERMINATED BY ','ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
+    #se retorna el archivo como descarga y se redirecciona al tablero de control
+    return send_file(nombreArchivo, attachment_filename=""+fecha+hora+' Usuarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))
 
+@app.route("/metodoDescargarHorarios")
+def MetDescargarHorarios():
+    #creo las variables para asignarle un nombre unico al archivo que se cree
+    fecha = str(date.today())
+    tiempo = datetime.now()
+    hora = tiempo.strftime(" %H-%M-%S")
+    nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+"Horarios.csv"
+    cur = mysql.connection.cursor()
+    #guardo el archivo en el servidor
+    cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '"""+nombreArchivo+""" ' FIELDS TERMINATED BY ','ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
+    #se retorna el archivo como descarga y se redirecciona al tablero de control
+    return send_file(nombreArchivo, attachment_filename=""+fecha+hora+' Horarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))   
 if __name__ == "__main__":
     app.run(debug=True)

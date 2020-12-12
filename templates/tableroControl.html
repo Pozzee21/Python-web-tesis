@@ -61,7 +61,7 @@
     <div class="col col-sm-4 col-md-10 justify-content-center" id="columna2">
       <div class="row col-sm-auto col-md-auto justify-content-center">
         <div class="col-auto col-sm-auto justify-content-center mt-2">
-          <div class="card" style="width: 18rem;">
+          <div class="card" style="width: 20rem;">
             <div class="card-body">
               <h5 class="card-title">Tabla operarios</h5>
               <h6 class="card-subtitle mb-2 text-muted"></h6>
@@ -73,40 +73,69 @@
           </div>
         </div>
         <div class="col-auto col-sm-auto mt-2">
-          <div class="card" style="width: 18rem;">
+          <div class="card" style="width: 20rem;">
             <div class="card-body">
               <h5 class="card-title">Opciones de exportacion</h5>
-              <a href="#" class="card-link">Exportar Usuarios .csv</a><br>
-              <a href="#" class="card-link">Exportar Horarios .csv</a>
+              <a href="/metodoDescargarUsuarios" class="card-link">Exportar Usuarios .csv</a><br>
+              <a href="/metodoDescargarHorarios" class="card-link">Exportar Horarios .csv</a>
             </div>
           </div>
         </div>
 
-        <div class="col-auto col-sm-auto mt-2">
-          <div class="card" style="width: 18rem;">
+        <div class="col-auto col-sm-auto mt-2 justify-content-center">
+          <div class="card" style="width: 20rem;">
             <div class="card-body">
-              <h5 class="card-title">Grafico con horarios recientes</h5>
+              <div id="chart_div" style="width: auto; height: auto;"></div>
+
               <a href="#" class="card-link">Refrescar</a>
+
               <a href="#" class="card-link">Ver Grafico</a>
             </div>
           </div>
         </div>
 
         <div class="col-auto col-sm-auto mt-2">
-          <div class="card" style="width: 18rem;">
+          <div class="card" style="width: 20rem;">
             <div class="card-body">
-              <h5 class="card-title">Opciones de exportacion</h5>
+              <h5 class="card-title">
+                Modificar Usuarios del sistema
+              </h5>
               <p class="card-text">
-                Exportar usuarios<br>
+                <a>Exportar usuarios</a><br>
                 Exportar Horarios<br>
                 Exportar obras
               </p>
-              <a href="#" class="card-link">Card link</a>
-              <a href="#" class="card-link">Another link</a>
+              <a href="#" class="card-link">Modificar Operarios</a>
+              <a href="#" class="card-link">Modificar Usuarios</a>
             </div>
           </div>
         </div>
       </div>
     </div>
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Year', 'Sales', 'Expenses'],
+      ['2013',  1000,      400],
+      ['2014',  1170,      460],
+      ['2015',  660,       1120],
+      ['2016',  1030,      540]
+    ]);
+
+    var options = {
+      title: 'Horarios de Operarios',
+      hAxis: {title: 'Year',  titleTextStyle: {color: '#  '}},
+      vAxis: {minValue: 0}
+    };
+
+    var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+
 {% endblock %}
