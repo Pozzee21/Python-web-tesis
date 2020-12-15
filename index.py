@@ -169,11 +169,7 @@ def buscarusuario():
             cur = mysql.connection.cursor()
             cur.execute(
                 'SELECT * FROM rode.usuario WHERE IdUsuario LIKE "%'
-                + id
-                + '%"or Usuario LIKE "%'
-                + id
-                + '%";'
-            )
+                +id+ '%"or Usuario LIKE "%'+id+ '%";')
             datausuario = cur.fetchall()
             if datausuario:
                 return render_template("/verUsuarios.html", usuarios=datausuario)
@@ -205,20 +201,11 @@ def editarUsuario(id):
 @app.route("/borrarUsuario/<string:id>", methods=["POST"])
 def borrarUsuario(id):
         cur = mysql.connection.cursor()
-        olddniusr=id
-        newIdUsuario=request.form['dni']
-        newUsuario=request.form['nombreUsuario']
-        newTipo=request.form.get('seleccionado')
-        hash= bcrypt.generate_password_hash(id)
-        data=(newIdUsuario,newUsuario,hash,newTipo,olddniusr)
-        query=""" UPDATE rode.usuario
-                SET IdUsuario = %s,
-                    Usuario=%s,
-                    contraseña= %s,
-                    Tipo= %s
-                WHERE idUsuario = %s """
-        cur.execute(query,data)    
+        query=""" DELETE FROM rode.usuario
+                WHERE idUsuario ="""+id+""";"""
+        cur.execute(query)    
         mysql.connection.commit()  
+        
         return redirect(url_for("verUsr"))
         
 
