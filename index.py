@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file
+from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file 
 from flask_mysqldb import MySQL
 from datetime import date, datetime
 import locale, time
@@ -6,10 +6,8 @@ from flask_bcrypt import Bcrypt
 
 # condiciones para la ejecucion de lcodigo 
 #   Se necita instalar todas estas dependencias importadas arriba (FLASK,FLASK_MYSQLDB,DATETIME,FLASK_BCRYPT) 
-#       Ademas se debe utilziar python 3.7.0 para correr flask_mysqldb 
-#          Tambien se debe tener la base de datos fuincionando y editar las app.config deacuerdo a su configuracion 
-#           
-
+#       Ademas se debe utilziar python 3.7.0 para poder correr flask_mysqldb 
+#          Tambien se debe tener la base de datos funcionando y editar las app.config de MSQL deacuerdo a su configuracion 
 
 app = Flask(__name__)
 # Servidor MSQL Local-configuracion de conexiones de base de datos
@@ -84,7 +82,10 @@ def tcontrol():
     # validar que  el  usuario que ingreso sea admin, de ser  asi redireccionarlo a  tablero de lo contrario a marcacion  de horario
     if "tipousr" in session:
         if session["tipousr"] == 1:
-            return render_template("tableroControl.html")
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM horario")
+            horarios = cur.fetchall()
+            return render_template("tableroControl.html",horarios=horarios)
         else:
             flash("Bienvenido " + session["nombreusr"])
             return redirect(url_for("MHorario"))
@@ -191,6 +192,35 @@ def buscarusuario():
 
     return redirect(url_for("verUsr"))
 
+@app.route("/editarUsuario/<string:id>", methods=["POST"])
+def editarUsuario(id):
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM rode.usuario WHERE idUsuario="+id+";")
+        datausuario = cur.fetchall()
+        #consigo solo unaa tupla con este siguiente codigo si no trae 2 items y uno  esta vacio
+        datausuario=  datausuario[0]
+        return render_template("/editarUsuario.html",usuario=datausuario)
+
+
+@app.route("/borrarUsuario/<string:id>", methods=["POST"])
+def borrarUsuario(id):
+        cur = mysql.connection.cursor()
+        olddniusr=id
+        newIdUsuario=request.form['dni']
+        newUsuario=request.form['nombreUsuario']
+        newTipo=request.form.get('seleccionado')
+        hash= bcrypt.generate_password_hash(id)
+        data=(newIdUsuario,newUsuario,hash,newTipo,olddniusr)
+        query=""" UPDATE rode.usuario
+                SET IdUsuario = %s,
+                    Usuario=%s,
+                    contraseña= %s,
+                    Tipo= %s
+                WHERE idUsuario = %s """
+        cur.execute(query,data)    
+        mysql.connection.commit()  
+        return redirect(url_for("verUsr"))
+        
 
 @app.route("/verOperariosPorObra")
 def verOpeObra():
@@ -221,7 +251,7 @@ def buscarOpeObra():
     flash(mensajeError)
     return redirect(url_for("verOpeObra"))
 
-
+#este memtodo no esta siendo bien implementado no estaba en el alcance del prototipo pero estara implementado para la exposición si todo sale bien 
 @app.route("/asistencia")
 def asist():
     cur = mysql.connection.cursor()
@@ -305,6 +335,25 @@ def metCrearUsuario():
     # si algo sale mal se redirige a la pantalla de inicio
     return redirect(url_for("tcontrol"))
 
+@app.route("/metodoEditarUsuario/<string:id>",  methods=["POST"])
+def metEditarUsuario(id):
+        
+        cur = mysql.connection.cursor()
+        olddniusr=id
+        newIdUsuario=request.form['dni']
+        newUsuario=request.form['nombreUsuario']
+        newTipo=request.form.get('seleccionado')
+        hash= bcrypt.generate_password_hash(id)
+        data=(newIdUsuario,newUsuario,hash,newTipo,olddniusr)
+        query=""" UPDATE rode.usuario
+                SET IdUsuario = %s,
+                    Usuario=%s,
+                    contraseña= %s,
+                    Tipo= %s
+                WHERE idUsuario = %s """
+        cur.execute(query,data)    
+        mysql.connection.commit()  
+        return redirect(url_for("verUsr"))
 
 @app.route("/metodoCrearObra", methods=["POST"])
 def crearobra():
@@ -385,16 +434,18 @@ def metodoCargarIngreso(Id):
     )
     usrData = cur.fetchall()
     usrData = usrData[0]
+    #Cambio la variable local para que me muestre los dias en español
     locale.setlocale(locale.LC_TIME, "es_ES")
+    #guardo el nombre del dia en la variable dia 
     dia = time.strftime("%A")
     dniOpe = session["idusuario"]
     # FALTA AGREGAR LA OBRA QUE TRAIGA DESDE DONDE ESTA MARCANDO O DESDE LOS DATOS DEL USUARIO MISMO
     location = usrData[4]
-    tipo = "    "
+    tipo = "Ingreso"
     # tiempo actual
     tiempo = datetime.now()
     hora = tiempo.strftime("%H:%M:%S")
-    # fecha en  aaaa-mm-dd
+    # fecha en aaaa-mm-dd
     fecha = str(date.today())
     sentencia = (dia, hora, fecha, dniOpe, location, tipo)
     cur = mysql.connection.cursor()
@@ -409,9 +460,7 @@ def metodoCargarIngreso(Id):
 @app.route("/metodoCargarSalida/<string:Id>")
 def metodoCargarSalida(Id):
     cur = mysql.connection.cursor()
-    cur.execute(
-        "SELECT * FROM rode.operario WHERE IdOperario=" + str(session["idusuario"])
-    )
+    cur.execute("SELECT * FROM rode.operario WHERE IdOperario=" + str(session["idusuario"]))
     usrData = cur.fetchall()
     usrData = usrData[0]
     locale.setlocale(locale.LC_TIME, "es_ES")
@@ -420,10 +469,10 @@ def metodoCargarSalida(Id):
     # FALTA AGREGAR LA OBRA QUE TRAIGA DESDE DONDE ESTA MARCANDO O DESDE LOS DATOS DEL USUARIO MISMO
     location = usrData[4]
     tipo = "Salida"
-    # tiempo actualw
+    # tiempo actual
     tiempo = datetime.now()
     hora = tiempo.strftime("%H:%M:%S")
-    # fecha en  aaaa-mm-dd
+    # fecha en aaaa-mm-dd
     fecha = str(date.today())
     sentencia = (dia, hora, fecha, dniOpe, location, tipo)
     cur = mysql.connection.cursor()
@@ -431,7 +480,6 @@ def metodoCargarSalida(Id):
         "INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",
         sentencia,
     )
-
     mysql.connection.commit()
 
     return redirect(url_for("MHorario"))
@@ -455,11 +503,14 @@ def MetDescargarHorarios():
     fecha = str(date.today())
     tiempo = datetime.now()
     hora = tiempo.strftime(" %H-%M-%S")
+    #puede colapsar por espacio si se piden muchas descargas, pero los .csv son muy livianos, y no consideran una preocupacion a pequeña escala 
     nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+"Horarios.csv"
     cur = mysql.connection.cursor()
     #guardo el archivo en el servidor
     cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '"""+nombreArchivo+""" ' FIELDS TERMINATED BY ','ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
     #se retorna el archivo como descarga y se redirecciona al tablero de control
     return send_file(nombreArchivo, attachment_filename=""+fecha+hora+' Horarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))   
+
+#seteo la aplicacion en debug para poder ver cambios en el codigo sin reiniciar
 if __name__ == "__main__":
     app.run(debug=True)

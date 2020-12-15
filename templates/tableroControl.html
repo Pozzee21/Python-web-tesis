@@ -114,22 +114,24 @@
     </div>
 </div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
-      ['Year', 'Sales', 'Expenses'],
-      ['2013',  1000,      400],
-      ['2014',  1170,      460],
-      ['2015',  660,       1120],
-      ['2016',  1030,      540]
+      ['Dias', 'operario1', 'operario2',"operario3"],
+      ['Lunes',  20, 45, 21],
+      ['Martes',  10, 20, 21],
+      ['Miercoles',20, 40, 23],
+      ['Jueves',  5, 8, 7],
+      ['Viernes',50, 20, 34]
     ]);
 
     var options = {
       title: 'Horarios de Operarios',
-      hAxis: {title: 'Year',  titleTextStyle: {color: '#  '}},
+      hAxis: {title: '',  titleTextStyle: {color: '#  '}},
       vAxis: {minValue: 0}
     };
 

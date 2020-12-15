@@ -6,23 +6,23 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputNombreObra">Nombre de obra</label>
-      <input type="text" class="form-control" id="inputNombreObra" name="nombreObra" placeholder="Ingrese el nombre">
+      <input type="text" class="form-control" id="inputNombreObra" name="nombreObra" placeholder="Ingrese el nombre" required="true">
     </div>
     <div class="form-group col-md-4 ">
       <label for="inputDni">Ubicacion</label>
       <input type="text" class="form-control" name='ubicacion' id="inputUbicacion"
-        placeholder="Ingrese la ubicacion provincia/direccion">
+        placeholder="Ingrese la ubicacion provincia/direccion"  required="true">
     </div>
     <div class="form-group col-md-4 ">
       <label for="inputDni">Centro de costo</label>
       <input type="text" class="form-control" name='centroCosto' id="inputCentroCosto"
-        placeholder="Ingrese el centro de costo">
+        placeholder="Ingrese el centro de costo" required="true">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputipo">Usuarios Jefes o jefas de obra</label>
-      <select id="inputipo" name='seleccionado' class="form-control">
+      <select id="inputipo" name='seleccionado' class="form-control" >
         {% for d in datos  %}
         <option value="{{ d[0] }}">{{ d[1]}} {{d[2]}}</option>
         {% endfor %}
