@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<h1 class="text-center">Tablero de control</h1>
-<div class="row mt-5 container-fluid justify-content-center">
+<div class="bktras">
+  <h1 class="text-center">Tablero De Control</h1>
+</div>
+<div class="row mt-5 container-fluid justify-content-center ">
   <!-- divido la pantalla en 2 parte1 -->
-  <div class="col justify-content-center" id="columna1">
+  <div class="d-flex  col justify-content-center" id="columna1">
 
     <div class="col-auto col-sm-2 justify-content-center">
       <a type="submit" class="mt-2 btn btn-primary" href="/CrearUsuario" data-toggle="tooltip" data-placement="top"
@@ -15,7 +16,7 @@
             d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
         </svg></a>
 
-        <a type="submit" class=" mt-2 btn btn-primary" href="/crearObra" data-toggle="tooltip" data-placement="top"
+      <a type="submit" class=" mt-2 btn btn-primary" href="/crearObra" data-toggle="tooltip" data-placement="top"
         title="Agregar obra">
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-building" fill="currentColor"
           xmlns="http://www.w3.org/2000/svg">
@@ -24,12 +25,15 @@
           <path
             d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
         </svg></a>
-        
+
       <a type="submit" class=" mt-2 btn btn-primary" href="/asistencia" data-toggle="tooltip" data-placement="top"
         title="Ver asistencia">
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-checklist" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-          <path fill-rule="evenodd" d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-checklist" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M14.5 3h-13a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+          <path fill-rule="evenodd"
+            d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
         </svg></a>
 
       <a type="submit" class=" mt-2 btn btn-primary" href="/verUsuarios" data-toggle="tooltip" data-placement="top"
@@ -57,87 +61,110 @@
 
     </div>
   </div>
-    <!-- divido la pantalla en 2 parte2  card view con datos de los operarios a la mano -->
-    <div class="col col-sm-4 col-md-10 justify-content-center" id="columna2">
-      <div class="row col-sm-auto col-md-auto justify-content-center">
-        <div class="col-auto col-sm-auto justify-content-center mt-2">
-          <div class="card" style="width: 20rem;">
-            <div class="card-body">
-              <h5 class="card-title">Tabla operarios</h5>
-              <h6 class="card-subtitle mb-2 text-muted"></h6>
-              <p class="card-text">Aqui se mostrara el contenido de una tabla con los empleados que marcaron asistencia
-                recientemente</p>
-              <a href="/verUsuarios" class="card-link">Ver operarios</a>
-              <a href="/verHorarios" class="card-link">Ver horarios</a>
+  <!-- divido la pantalla en 2 parte2  card view con datos de los operarios a la mano -->
+  <div class="col col-sm-4 col-md-10 justify-content-center" id="columna2">
+    <div class="row col-sm-auto col-md-auto justify-content-center">
+      <div class="col-auto col-sm-auto justify-content-center mt-2">
+        <div class="card  " style="width: 22rem;">
+          <div class="card-header">
+            <h5 class="card-title">Tabla Usuarios</h5>
+          </div>
+          <div class="card-body">
+
+
+            <div class="table-responsive  justify-content-center">
+              <table class="table table-sm ">
+                <thead> 
+                  <tr>
+                    <th scope="col" class="text-center">DNI</th>
+                    <th scope="col" class="text-center">Usuario</th>
+                    <th scope="col" class="text-center">Tipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%for usr in usuarios %}
+                  <tr>
+                    <td id="DNI" class="text-center">{{usr[0]}}</td>
+                    <td id="Usuario" class="text-center">{{usr[1]}}</td>
+                    <td id="Tipo" class="text-center">{{usr[3]}}</td>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
+            <a href="/verUsuarios" class="card-link">Ver Usuarios</a>
+            <a href="/verHorarios" class="card-link">Ver horarios</a>
           </div>
         </div>
-        <div class="col-auto col-sm-auto mt-2">
-          <div class="card" style="width: 20rem;">
-            <div class="card-body">
-              <h5 class="card-title">Opciones de exportacion</h5>
-              <a href="/metodoDescargarUsuarios" class="card-link">Exportar Usuarios .csv</a><br>
-              <a href="/metodoDescargarHorarios" class="card-link">Exportar Horarios .csv</a>
-            </div>
+      </div>
+      <div class="col-auto col-sm-auto mt-2">
+        <div class="card  h-100" style="width: 22rem;">
+          <div class="card-header">
+            <h5 class="card-title">Opciones de exportacion</h5>
+          </div>
+          <div class="card-body">
+            <a href="/metodoDescargarUsuarios" class=" align-text-bottom">Exportar Usuarios .csv</a><br>
+            <a href="/metodoDescargarHorarios" class="card-link align-text-bottom">Exportar Horarios .csv</a>
           </div>
         </div>
+      </div>
 
-        <div class="col-auto col-sm-auto mt-2 justify-content-center">
-          <div class="card" style="width: 20rem;">
-            <div class="card-body">
-              <div id="chart_div" style="width: auto; height: auto;"></div>
+      <div class="col-auto col-sm-auto mt-2 justify-content-center">
+        <div class="card " style="width: 22rem;">
+          <div class="card-header">
+            <h5 class="card-title">Horas por dia de operarios</h5>
+          </div>
+          <div class="card-body">
+            <div id="chart_div" style="width: auto; height: auto;"></div>
 
-              <a href="#" class="card-link">Refrescar</a>
-
-              <a href="#" class="card-link">Ver Grafico</a>
-            </div>
+            <a href="#" class="card-link" data-toggle="tooltip" data-placement="top"
+              title="No implementado">Refrescar</a>
+            <a href="#" class="card-link" data-toggle="tooltip" data-placement="top" title="No implementado">Ver
+              Grafico</a>
           </div>
         </div>
+      </div>
 
-        <div class="col-auto col-sm-auto mt-2">
-          <div class="card" style="width: 20rem;">
-            <div class="card-body">
-              <h5 class="card-title">
-                Modificar Usuarios del sistema
-              </h5>
-              <p class="card-text">
-                <a>Exportar usuarios</a><br>
-                Exportar Horarios<br>
-                Exportar obras
-              </p>
-              <a href="#" class="card-link">Modificar Operarios</a>
-              <a href="#" class="card-link">Modificar Usuarios</a>
-            </div>
+      <div class="col-auto col-sm-auto mt-2">
+        <div class="card  h-100" style="width: 22rem;">
+          <div class="card-header">
+            <h5 class="card-title">Modificar Usuarios del sistema</h5>
+          </div>
+          <div class="card-body">
+            <a href="#" class="card-link">Modificar Operarios</a>
+            <a href="#" class="card-link">Modificar Usuarios</a>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>
+<footer>
+  <h6>Tipo de usuario 1= Recursos humanos, 2= Jefe  de  obra, 3= Operario</h6>
+  <p><a href="mailto:JeremiasIgnacioPosse@gmail.com">JeremiasIgnacioPosse@gmail.com</a></p>
+</footer> 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
 <script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
+  google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
     var data = google.visualization.arrayToDataTable([
-      ['Dias', 'operario1', 'operario2',"operario3"],
-      ['Lunes',  20, 45, 21],
-      ['Martes',  10, 20, 21],
-      ['Miercoles',20, 40, 23],
-      ['Jueves',  5, 8, 7],
-      ['Viernes',50, 20, 34]
+      ['Dias', 'Ope2', 'Ope3', "Ope1"],
+      ['Lunes', 9, 7, 10],
+      ['Martes', 10, 8, 6],
+      ['Miercoles', 3, 7, 8],
+      ['Jueves', 5, 9, 10],
+      ['Viernes', 10, 7, 5]
     ]);
-
     var options = {
-      title: 'Horarios de Operarios',
-      hAxis: {title: '',  titleTextStyle: {color: '#  '}},
-      vAxis: {minValue: 0}
+      hAxis: { title: 'Dias', titleTextStyle: { color: '#  ' } },
+      vAxis: { title: 'Horas', minValue: 0 }
     };
-
     var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
     chart.draw(data, options);
   }
 </script>
 
-{% endblock %}
+{% endblock %}x

@@ -80,15 +80,22 @@ def logout():
 @app.route("/tableroControl")
 def tcontrol():
     # validar que  el  usuario que ingreso sea admin, de ser  asi redireccionarlo a  tablero de lo contrario a marcacion  de horario
+    
     if "tipousr" in session:
         if session["tipousr"] == 1:
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM horario")
             horarios = cur.fetchall()
-            return render_template("tableroControl.html",horarios=horarios)
+            cur.execute("SELECT * FROM rode.usuario LIMIT 1,3;")
+            datausuario = cur.fetchall()
+            # tupla de datos de horarios
+            return render_template("tableroControl.html",horarios=horarios,usuarios=datausuario)
         else:
-            flash("Bienvenido " + session["nombreusr"])
+            flash("Bienvenido " + session["nombreusr"]+" No tienes permitido ingresar a esta seccion todavia")
             return redirect(url_for("MHorario"))
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM rode.usuario")
+        datausuario = cur.fetchall()
     return redirect(url_for("login"))
 
 
@@ -101,7 +108,7 @@ def MHorario():
         if session["tipousr"] == 3:
             idOpe = session["idusuario"]
             cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM horario")
+            cur.execute("SELECT * FROM horario WHERE DniOperario="+str(idOpe)+";")
             horarios = cur.fetchall()
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM operario WHERE IdOperario=" + str(idOpe))
@@ -497,6 +504,35 @@ def MetDescargarHorarios():
     cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '"""+nombreArchivo+""" ' FIELDS TERMINATED BY ','ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
     #se retorna el archivo como descarga y se redirecciona al tablero de control
     return send_file(nombreArchivo, attachment_filename=""+fecha+hora+' Horarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))   
+
+#metodo para sumar horarios de operarios devuelve una tupla con los ultimos dias marcados falta implentar
+def sumaHorarios(dataope):
+    #diccionario de datos
+    listaDias={}
+    #veo que le usuario sea Operario 
+    for datos in dataope:
+        if datos[3]!=3:
+            continue 
+        else:
+            #valido que contenga algo la variable id
+            if datos[0]:
+                cur = mysql.connection.cursor()
+                #envio la sentencia a la base de datos donde me devuelve los usuarios ordenados por fecha asendente, solo los campos fecha hora y tipo
+                cur.execute("SELECT fecha,hora,tipo FROM horario WHERE DniOperario="+datos[0]+"ORDER BY fecha asc;")
+                horarios = cur.fetchall()
+                #compruebo el tamaño de la respuesta para utilizarla
+                if len(horarios)>1:
+                    for i , itemH in enumerate(horarios):
+                        #index 0  y 1 
+                        entrada= horarios[i]
+                        salida=  horarios[i+1]
+                        Horastrabajadas = entrada[1]-salida[1]
+                        print(Horastrabajadas)
+                        #salida-entrada = horas trabajadas
+                        next(horarios)
+                        # lista de dias . add (diaactual:horas trabajadas)
+                else:  
+                 return listaDias 
 
 #seteo la aplicacion en debug para poder ver cambios en el codigo sin reiniciar
 if __name__ == "__main__":
