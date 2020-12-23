@@ -5,7 +5,7 @@ import locale, time
 from flask_bcrypt import Bcrypt
 
 # condiciones para la ejecucion de lcodigo 
-#   Se necita instalar todas estas dependencias importadas arriba (FLASK,FLASK_MYSQLDB,DATETIME,FLASK_BCRYPT) 
+#   Se necesita instalar todas estas dependencias importadas arriba (FLASK,FLASK_MYSQLDB,DATETIME,FLASK_BCRYPT) 
 #       Ademas se debe utilziar python 3.7.0 para poder correr flask_mysqldb 
 #          Tambien se debe tener la base de datos funcionando y editar las app.config de MSQL deacuerdo a su configuracion 
 
