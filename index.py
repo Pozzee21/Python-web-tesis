@@ -11,10 +11,10 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 # Servidor MSQL Local-configuracion de conexiones de base de datos
-app.config["MYSQL_HOST"] = "192.168.0.104:3306"
-app.config["MYSQL_USER"] = "Tesis"
-app.config["MYSQL_PASSWORD"] = "Rode7991*"
-app.config["MYSQL_DB"] = "rode"
+app.config["MYSQL_HOST"] = "sql313.epizy.com"
+app.config["MYSQL_USER"] = "epiz_27529235"
+app.config["MYSQL_PASSWORD"] = "sPQHszkk8EzUAR"
+app.config["MYSQL_DB"] = "epiz_27529235_rode"
 
 # Variable para el cursor de la base de datos
 mysql= MySQL(app)
