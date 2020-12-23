@@ -11,8 +11,8 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 # Servidor MSQL Local-configuracion de conexiones de base de datos
-app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "root"
+app.config["MYSQL_HOST"] = "192.168.0.104:3306"
+app.config["MYSQL_USER"] = "Tesis"
 app.config["MYSQL_PASSWORD"] = "Rode7991*"
 app.config["MYSQL_DB"] = "rode"
 
