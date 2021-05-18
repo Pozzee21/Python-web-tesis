@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file 
+from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file, send_from_directory, safe_join, abort
 from flask_mysqldb import MySQL
 from datetime import date, datetime
 import locale, time
@@ -22,6 +22,8 @@ mysql= MySQL(app)
 bcrypt = Bcrypt()
 #Clave secreta
 app.secret_key = "kYp3s6v9y$B&E)H@McQfTjWnZq4t7w!z"
+#Variable del servidor de archivos 
+app.config["CLIENT_CSV"] ="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"
 
 @app.route("/")
 def home():
@@ -484,28 +486,32 @@ def MetDescargarUsr():
     fecha = str(date.today())
     tiempo = datetime.now()
     hora = tiempo.strftime(" %H-%M-%S")
-    nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+"Usuarios.csv"
+    nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Usuarios.csv"
     cur = mysql.connection.cursor()
     #guardo el archivo en el servidor
-    cur.execute("""SELECT * FROM rode.usuario INTO OUTFILE '"""+nombreArchivo+""" ' FIELDS TERMINATED BY ','ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
+    cur.execute("""SELECT * FROM rode.usuario INTO OUTFILE '"""+nombreArchivo+"""' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
     #se retorna el archivo como descarga y se redirecciona al tablero de control
-    return send_file(nombreArchivo, attachment_filename=""+fecha+hora+' Usuarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))
+    return send_file(nombreArchivo, attachment_filename='Usuarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))
 
 @app.route("/metodoDescargarHorarios")
 def MetDescargarHorarios():
-    #creo las variables para asignarle un nombre unico al archivo que se cree
+    #Creo las variables para asignarle un nombre unico al archivo que se cree
     fecha = str(date.today())
     tiempo = datetime.now()
     hora = tiempo.strftime(" %H-%M-%S")
-    #puede colapsar por espacio si se piden muchas descargas, pero los .csv son muy livianos, y no consideran una preocupacion a pequeña escala 
-    nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+"Horarios.csv"
+    #Puede colapsar por espacio si se piden muchas descargas, pero los .csv son muy livianos, y no consideran una preocupacion a pequeña escala 
+    rutaArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Horarios.csv"
+    nombreArchivo= fecha+hora+" Horarios"
     cur = mysql.connection.cursor()
-    #guardo el archivo en el servidor
-    cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '"""+nombreArchivo+""" ' FIELDS TERMINATED BY ','ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
-    #se retorna el archivo como descarga y se redirecciona al tablero de control
-    return send_file(nombreArchivo, attachment_filename=""+fecha+hora+' Horarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))   
+    #Guardo el archivo en el servidor
+    cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '%s' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'"""%  (rutaArchivo)) 
+    #Se retorna el archivo como descarga y se redirecciona al tablero de control
+    try:
+        return send_from_directory(app.config["CLIENT_CSV"], filename=nombreArchivo, as_attachment=True), redirect(url_for("tcontrol"))
+    except FileNotFoundError:
+        abort(404)
 
-#metodo para sumar horarios de operarios devuelve una tupla con los ultimos dias marcados falta implentar
+#Metodo para sumar horarios de operarios devuelve una tupla con los ultimos dias marcados falta implentar
 def sumaHorarios(dataope):
     #diccionario de datos
     listaDias={}
