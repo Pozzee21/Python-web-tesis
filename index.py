@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file, send_from_directory, safe_join, abort
+from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file, send_from_directory, abort
 from flask_mysqldb import MySQL
 from datetime import date, datetime
 import locale, time
@@ -23,7 +23,7 @@ bcrypt = Bcrypt()
 #Clave secreta
 app.secret_key = "kYp3s6v9y$B&E)H@McQfTjWnZq4t7w!z"
 #Variable del servidor de archivos 
-app.config["CLIENT_CSV"] ="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"
+app.config["CLIENT_CSV"] ="""C:/ProgramData/MySQL/MySQL Server 8.0/Uploads"""
 
 @app.route("/")
 def home():
@@ -102,8 +102,6 @@ def tcontrol():
 
 
 # poner en el metodo que  espera un parametro para utilizarlo en la busqueda de horarios solo del operario que esta por marcar asistencia
-
-
 @app.route("/MarcarHorario")
 def MHorario():
     if "tipousr" in session:
@@ -486,12 +484,16 @@ def MetDescargarUsr():
     fecha = str(date.today())
     tiempo = datetime.now()
     hora = tiempo.strftime(" %H-%M-%S")
-    nombreArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Usuarios.csv"
+    rutaArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Usuarios.csv"
+    nombreArchivo=fecha+hora+" Usuarios.csv"
     cur = mysql.connection.cursor()
     #guardo el archivo en el servidor
-    cur.execute("""SELECT * FROM rode.usuario INTO OUTFILE '"""+nombreArchivo+"""' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
+    cur.execute("""SELECT * FROM rode.usuario INTO OUTFILE '"""+rutaArchivo+"""' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
     #se retorna el archivo como descarga y se redirecciona al tablero de control
-    return send_file(nombreArchivo, attachment_filename='Usuarios.csv', as_attachment="true"), redirect(url_for("tcontrol"))
+    try:
+        return send_file(filename_or_fp=rutaArchivo,as_attachment=True,attachment_filename=nombreArchivo)
+    except:
+        return "Algo salio mas vuelve atras" 
 
 @app.route("/metodoDescargarHorarios")
 def MetDescargarHorarios():
@@ -501,21 +503,22 @@ def MetDescargarHorarios():
     hora = tiempo.strftime(" %H-%M-%S")
     #Puede colapsar por espacio si se piden muchas descargas, pero los .csv son muy livianos, y no consideran una preocupacion a pequeña escala 
     rutaArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Horarios.csv"
-    nombreArchivo= fecha+hora+" Horarios"
+    nombreArchivo= fecha+hora+" Horarios.csv"
     cur = mysql.connection.cursor()
     #Guardo el archivo en el servidor
     cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '%s' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'"""%  (rutaArchivo)) 
     #Se retorna el archivo como descarga y se redirecciona al tablero de control
     try:
-        return send_from_directory(app.config["CLIENT_CSV"], filename=nombreArchivo, as_attachment=True), redirect(url_for("tcontrol"))
-    except FileNotFoundError:
-        abort(404)
+        return send_file(filename_or_fp=rutaArchivo,as_attachment=True,attachment_filename=nombreArchivo)
+    except:
+        return "Algo salio mas vuelve atras"   
+
 
 #Metodo para sumar horarios de operarios devuelve una tupla con los ultimos dias marcados falta implentar
 def sumaHorarios(dataope):
     #diccionario de datos
     listaDias={}
-    #veo que le usuario sea Operario 
+    #verifico que le usuario sea Operario 
     for datos in dataope:
         if datos[3]!=3:
             continue 
