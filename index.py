@@ -8,6 +8,7 @@ from flask_mysqldb import MySQL
 #       Ademas se debe utilziar python 3.7.0 para poder correr flask_mysqldb 
 #          Tambien se debe tener la base de datos funcionando y editar las app.config de MSQL deacuerdo a su configuracion 
 
+
 app = Flask(__name__)
 # Servidor MSQL Local-configuracion de conexiones de base de datos
 app.config["MYSQL_HOST"] = "remotemysql.com"
