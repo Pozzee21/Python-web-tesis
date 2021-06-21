@@ -1,9 +1,8 @@
-from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file, send_from_directory, abort
-from flask_mysqldb import MySQL
+from flask import Flask, redirect, render_template, request, url_for, flash, session, send_file
 from datetime import date, datetime
-import locale, time
+import locale, time, pandas as pd, os
 from flask_bcrypt import Bcrypt
-
+from flask_mysqldb import MySQL
 # condiciones para la ejecucion de lcodigo 
 #   Se necesita instalar todas estas dependencias importadas arriba (FLASK,FLASK_MYSQLDB,DATETIME,FLASK_BCRYPT) 
 #       Ademas se debe utilziar python 3.7.0 para poder correr flask_mysqldb 
@@ -11,15 +10,19 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 # Servidor MSQL Local-configuracion de conexiones de base de datos
-app.config["MYSQL_HOST"] = "localhost"
-app.config["MYSQL_USER"] = "root"
-app.config["MYSQL_PASSWORD"] = "Rode7991*"
-app.config["MYSQL_DB"] = "rode"
+app.config["MYSQL_HOST"] = "remotemysql.com"
+app.config["MYSQL_USER"] = "9deC7T4LsG"
+app.config["MYSQL_PASSWORD"] = "xhE0VledMn"
+app.config["MYSQL_DB"] = "9deC7T4LsG"
+
+#Variable para localizacion de exportaciones de usuarios y horarios
+here = os.path.dirname(os.path.abspath(__file__))
 
 # Variable para el cursor de la base de datos
 mysql= MySQL(app)
 # Variable para hasheo
 bcrypt = Bcrypt()
+
 #Clave secreta
 app.secret_key = "kYp3s6v9y$B&E)H@McQfTjWnZq4t7w!z"
 #Variable del servidor de archivos 
@@ -47,7 +50,7 @@ def loginIn():
         usrlogin = request.form["usuario"]
         pasw = request.form["password"]
         cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM rode.usuario WHERE usuario="'+usrlogin+'";')
+        cur.execute('SELECT * FROM 9deC7T4LsG.usuario WHERE usuario="'+usrlogin+'";')
         userdata = cur.fetchall()
         if userdata:
             userdata = userdata[0]
@@ -88,7 +91,7 @@ def tcontrol():
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM horario")
             horarios = cur.fetchall()
-            cur.execute("SELECT * FROM rode.usuario LIMIT 1,3;")
+            cur.execute("SELECT * FROM 9deC7T4LsG.usuario LIMIT 1,3;")
             datausuario = cur.fetchall()
             # tupla de datos de horarios
             return render_template("tableroControl.html",horarios=horarios,usuarios=datausuario)
@@ -96,7 +99,7 @@ def tcontrol():
             flash("Bienvenido " + session["nombreusr"]+" No tienes permitido ingresar a esta seccion todavia")
             return redirect(url_for("MHorario"))
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM rode.usuario")
+        cur.execute("SELECT * FROM 9deC7T4LsG.usuario")
         datausuario = cur.fetchall()
     return redirect(url_for("login"))
 
@@ -148,7 +151,7 @@ def Buscarhorario():
             cur = mysql.connection.cursor()
             # Hago la consulta para la busqueda en la db, donde el dni del operario sea como el id que le paso
             cur.execute(
-                'SELECT * FROM rode.horario WHERE DniOperario LIKE "%'
+                'SELECT * FROM 9deC7T4LsG.horario WHERE DniOperario LIKE "%'
                 + id
                 + '%"or Ubicacion LIKE "%'
                 + id
@@ -163,7 +166,7 @@ def Buscarhorario():
 @app.route("/verUsuarios")
 def verUsr():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM rode.usuario")
+    cur.execute("SELECT * FROM 9deC7T4LsG.usuario")
     datausuario = cur.fetchall()
     return render_template("/verUsuarios.html", usuarios=datausuario)
 
@@ -175,7 +178,7 @@ def buscarusuario():
         if id:
             cur = mysql.connection.cursor()
             cur.execute(
-                'SELECT * FROM rode.usuario WHERE IdUsuario LIKE "%'
+                'SELECT * FROM 9deC7T4LsG.usuario WHERE IdUsuario LIKE "%'
                 +id+ '%"or Usuario LIKE "%'+id+ '%";')
             datausuario = cur.fetchall()
             if datausuario:
@@ -198,7 +201,7 @@ def buscarusuario():
 @app.route("/editarUsuario/<string:id>", methods=["POST"])
 def editarUsuario(id):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM rode.usuario WHERE idUsuario="+id+";")
+        cur.execute("SELECT * FROM 9deC7T4LsG.usuario WHERE idUsuario="+id+";")
         datausuario = cur.fetchall()
         #consigo solo unaa tupla con este siguiente codigo si no trae 2 items y uno  esta vacio
         datausuario=  datausuario[0]
@@ -208,7 +211,7 @@ def editarUsuario(id):
 @app.route("/borrarUsuario/<string:id>", methods=["POST"])
 def borrarUsuario(id):
         cur = mysql.connection.cursor()
-        query=""" DELETE FROM rode.usuario
+        query=""" DELETE FROM 9deC7T4LsG.usuario
                 WHERE idUsuario ="""+id+""";"""
         cur.execute(query)    
         mysql.connection.commit()  
@@ -269,7 +272,7 @@ def CrearRRHH():
 def crearOperario():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM usuario Where Tipo=3")
-    # lleno la variable datos con  la informacion  de  usuarios que tengan como tipo 1
+    #lleno la variable datos con  la informacion  de  usuarios que tengan como tipo 1
     datos = cur.fetchall()
     cur.execute("SELECT * FROM obra")
     obras = cur.fetchall()
@@ -339,7 +342,7 @@ def metEditarUsuario(id):
         newTipo=request.form.get('seleccionado')
         hash= bcrypt.generate_password_hash(id)
         data=(newIdUsuario,newUsuario,hash,newTipo,olddniusr)
-        query=""" UPDATE rode.usuario
+        query=""" UPDATE 9deC7T4LsG.usuario
                 SET IdUsuario = %s,
                     Usuario=%s,
                     contraseña= %s,
@@ -364,7 +367,7 @@ def crearobra():
         cur = mysql.connection.cursor()
         # Sentencia
         cur.execute(
-            "INSERT INTO `rode`.`obra` (`NombreObra`,`Ubicacion`,`CentroCosto`,`idJefeJefaObra`) VALUES (%s,%s,%s,%s)",
+            "INSERT INTO `9deC7T4LsG`.`obra` (`NombreObra`,`Ubicacion`,`CentroCosto`,`idJefeJefaObra`) VALUES (%s,%s,%s,%s)",
             sentencia,
         )
         # cargo la sentencia con un commit
@@ -391,7 +394,7 @@ def MetJO():
         cur = mysql.connection.cursor()
         # Sentencia
         cur.execute(
-            "INSERT INTO `rode`.`jefejefaobra` (`IdJefeJefaObra`,`Nombre`,`Apellido`,`Telefono`,`obra`) VALUES (%s,%s,%s,%s,%s)",
+            "INSERT INTO `9deC7T4LsG`.`jefejefaobra` (`IdJefeJefaObra`,`Nombre`,`Apellido`,`Telefono`,`obra`) VALUES (%s,%s,%s,%s,%s)",
             sentencia,
         )
         # cargo la sentencia con un commit
@@ -412,7 +415,7 @@ def MetCrearOp():
     cur = mysql.connection.cursor()
     # Sentencia
     cur.execute(
-        "INSERT INTO `rode`.`operario` (`IdOperario`,`Nombre`,`Apellido`,`Telefono`,`IdObra`) VALUES (%s,%s,%s,%s,%s)",
+        "INSERT INTO `9deC7T4LsG`.`operario` (`IdOperario`,`Nombre`,`Apellido`,`Telefono`,`IdObra`) VALUES (%s,%s,%s,%s,%s)",
         sentencia,
     )
     # cargo la sentencia con un commit
@@ -424,7 +427,7 @@ def MetCrearOp():
 def metodoCargarIngreso(Id):
     cur = mysql.connection.cursor()
     cur.execute(
-        "SELECT * FROM rode.operario WHERE IdOperario=" + str(session["idusuario"])
+        "SELECT * FROM 9deC7T4LsG.operario WHERE IdOperario=" + str(session["idusuario"])
     )
     usrData = cur.fetchall()
     usrData = usrData[0]
@@ -444,7 +447,7 @@ def metodoCargarIngreso(Id):
     sentencia = (dia, hora, fecha, dniOpe, location, tipo)
     cur = mysql.connection.cursor()
     cur.execute(
-        "INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",
+        "INSERT INTO `9deC7T4LsG`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",
         sentencia
     )
     mysql.connection.commit()
@@ -454,7 +457,7 @@ def metodoCargarIngreso(Id):
 @app.route("/metodoCargarSalida/<string:Id>")
 def metodoCargarSalida(Id):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM rode.operario WHERE IdOperario=" + str(session["idusuario"]))
+    cur.execute("SELECT * FROM 9deC7T4LsG.operario WHERE IdOperario=" + str(session["idusuario"]))
     usrData = cur.fetchall()
     usrData = usrData[0]
     locale.setlocale(locale.LC_TIME, "es_ES")
@@ -471,7 +474,7 @@ def metodoCargarSalida(Id):
     sentencia = (dia, hora, fecha, dniOpe, location, tipo)
     cur = mysql.connection.cursor()
     cur.execute(
-        "INSERT INTO `rode`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",
+        "INSERT INTO `9deC7T4LsG`.`horario` (`Dia`, `Hora`, `Fecha`, `DniOperario`, `Ubicacion`, `Tipo`) VALUES (%s,%s,%s,%s,%s,%s)",
         sentencia,
     )
     mysql.connection.commit()
@@ -480,39 +483,41 @@ def metodoCargarSalida(Id):
 
 @app.route("/metodoDescargarUsuarios")
 def MetDescargarUsr():
-    #creo las variables para asignarle un nombre unico al archivo que se cree
-    fecha = str(date.today())
-    tiempo = datetime.now()
-    hora = tiempo.strftime(" %H-%M-%S")
-    rutaArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Usuarios.csv"
-    nombreArchivo=fecha+hora+" Usuarios.csv"
-    cur = mysql.connection.cursor()
-    #guardo el archivo en el servidor
-    cur.execute("""SELECT * FROM rode.usuario INTO OUTFILE '"""+rutaArchivo+"""' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';""") 
-    #se retorna el archivo como descarga y se redirecciona al tablero de control
-    try:
-        return send_file(filename_or_fp=rutaArchivo,as_attachment=True,attachment_filename=nombreArchivo)
-    except:
-        return "Algo salio mas vuelve atras" 
+        q = 'select * from 9deC7T4LsG.usuario'
+        cur = mysql.connection.cursor()
+        cur.execute(q)
+        #Creo las variables para asignarle un nombre unico al archivo que se cree
+        fecha = str(date.today())
+        tiempo = datetime.now()
+        hora = tiempo.strftime(" %H-%M-%S")
+        nombreArchivo= fecha+hora+" Usuarios.csv"
+        #Creo la variable del path para descargar el archivo
+        filepath = f'{here}/{nombreArchivo}'
+        #creo el archivo
+        pd.DataFrame(cur.fetchall()).to_csv(filepath, index=False)
+        try:
+            return send_file(filename_or_fp=filepath, as_attachment=True, attachment_filename=nombreArchivo)
+        except:
+            return "Algo salio mas vuelve atras"
 
 @app.route("/metodoDescargarHorarios")
 def MetDescargarHorarios():
+    q = 'select * from 9deC7T4LsG.horario'
+    cur = mysql.connection.cursor()
+    cur.execute(q)
     #Creo las variables para asignarle un nombre unico al archivo que se cree
     fecha = str(date.today())
     tiempo = datetime.now()
     hora = tiempo.strftime(" %H-%M-%S")
-    #Puede colapsar por espacio si se piden muchas descargas, pero los .csv son muy livianos, y no consideran una preocupacion a pequeña escala 
-    rutaArchivo="C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/"+fecha+hora+" Horarios.csv"
     nombreArchivo= fecha+hora+" Horarios.csv"
-    cur = mysql.connection.cursor()
-    #Guardo el archivo en el servidor
-    cur.execute("""SELECT * FROM rode.Horario INTO OUTFILE '%s' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'"""%  (rutaArchivo)) 
-    #Se retorna el archivo como descarga y se redirecciona al tablero de control
+    #Creo la variable del path para descargar el archivo
+    filepath = f'{here}/{nombreArchivo}'
+    #creo el archivo
+    pd.DataFrame(cur.fetchall()).to_csv(filepath, index=False)
     try:
-        return send_file(filename_or_fp=rutaArchivo,as_attachment=True,attachment_filename=nombreArchivo)
+        return send_file(filename_or_fp=filepath, as_attachment=True, attachment_filename=nombreArchivo)
     except:
         return "Algo salio mas vuelve atras"   
-
 
 #Metodo para sumar horarios de operarios devuelve una tupla con los ultimos dias marcados falta implentar
 def sumaHorarios(dataope):
